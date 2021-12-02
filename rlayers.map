@@ -1,32 +1,12 @@
 MAP
-    # the following two lines tell MapServer to write debugging output to a log file.  Remove the '#' from the beginning
-    # of the two lines below to enable this logging:
-    # CONFIG "MS_ERRORFILE" "../var/log/ewsmonthly.log"
-    #DEBUG 5
-
-    # all temp files get prefixed with this string
     NAME ms_rlayers
-
-    #jdm:added to accomodate map layers
-    #see http://trac.osgeo.org/mapserver/ticket/3055
     MAXSIZE 3072    
-    
-    # background color of image if transparency
-    # is not requested
     IMAGECOLOR 255 255 255
-
-    # default output image dimensions
     SIZE 1200 1000
-
-    # always returns a map
     STATUS ON
-
-    # set top level projection
     PROJECTION
      "init=epsg:4326"
     END
-
-    # image format options
     OUTPUTFORMAT
         NAME "GEOTIFF"
         DRIVER "GDAL/GTiff"
@@ -34,22 +14,12 @@ MAP
         IMAGEMODE "BYTE"
         EXTENSION "tif"
     END
-
-    # minx miny maxx maxy
-    # sets:
-    # /WMT_MS_Capabilities/Capability/Layer/LatLonBoundingBox(@minx @miny @maxx @maxx)
-    EXTENT -180 -90 180 90 # World
-
-    # add def pointers for symbols
+    EXTENT -180 -90 180 90
     SYMBOLSET "./symbols/symbols35.sym"
     FONTSET   "./fonts/fonts.list"
-
     #
-    # Start of web interface definition
     WEB
-        # this is the real filepath to the temp dir for intermediate file creation
         IMAGEPATH "./tmp"
-        # this is the web-accessible path to IMAGEPATH
         IMAGEURL "/tmp/"
         HEADER "./templates/query_header.html"
         FOOTER "./templates/query_footer.html"
@@ -57,20 +27,16 @@ MAP
             "ows_enable_request"     "*"
             "wms_title"              "rlayers"
             "wms_abstract"           "rlayers"
-            "wms_onlineresource"     "%(SERVICE_URL)s"
-            "wms_srs"                "EPSG:4326 EPSG:2163 EPSG:3785 EPSG:900913"
+            "wms_onlineresource"     "http://los-food-asset-map-data.nemac.org"
+            "wms_srs"                "EPSG:3857 EPSG:4326 EPSG:2163 EPSG:3785 EPSG:900913"
         END
     END
-
     QUERYMAP
         STATUS OFF
     END
-
-    # set defaults for GetLegendGraphic requests 
     LEGEND
       KEYSIZE 154 297
     END
-
     LAYER
         NAME tree_cover
         PROJECTION
@@ -89,7 +55,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/tree_cover.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/tree_cover.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 	INCLUDE "cmaps/tree_cover.cmap"
@@ -98,8 +64,8 @@ MAP
             "wms_abstract"          "tree_cover"
             "gml_include_items"     "value_0"
 	    "gml_value_0_alias"     "tree_cover"
-        END  # end METADATA
-    END # end LAYER
+        END
+    END
     LAYER
         NAME landcover_06
         PROJECTION
@@ -118,7 +84,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/landcover_06.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/landcover_06.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 	INCLUDE "cmaps/landcover_06.cmap"
@@ -127,8 +93,8 @@ MAP
             "wms_abstract"          "landcover_06"
             "gml_include_items"     "value_list"
 	    "gml_value_0_alias"     "landcover_06"
-        END  # end METADATA
-    END # end LAYER
+        END
+    END
     LAYER
         NAME impsurf_06
         PROJECTION
@@ -147,7 +113,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/impsurf_06.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/impsurf_06.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/impsurf_06.cmap"
@@ -156,8 +122,8 @@ MAP
             "wms_abstract"          "impsurf_06"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "impsurf_06"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_76
         PROJECTION
@@ -176,7 +142,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_76.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_76.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -185,8 +151,8 @@ MAP
             "wms_abstract"          "uncc_76"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_76"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_85
         PROJECTION
@@ -205,7 +171,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_85.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_85.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -214,8 +180,8 @@ MAP
             "wms_abstract"          "uncc_85"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_85"
-        END  # end METADATA
-    END # end LAYER
+        END
+    END
     LAYER
         NAME uncc_96
         PROJECTION
@@ -234,7 +200,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_96.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_96.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -243,8 +209,8 @@ MAP
             "wms_abstract"          "uncc_96"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_96"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_06
         PROJECTION
@@ -263,7 +229,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_06.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_06.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -272,8 +238,8 @@ MAP
             "wms_abstract"          "uncc_06"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_06"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_10
         PROJECTION
@@ -292,7 +258,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_10.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_10.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -301,8 +267,8 @@ MAP
             "wms_abstract"          "uncc_10"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_10"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_15
         PROJECTION
@@ -321,7 +287,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_15.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_15.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -330,8 +296,8 @@ MAP
             "wms_abstract"          "uncc_15"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_15"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_20
         PROJECTION
@@ -350,7 +316,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_20.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_20.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -359,8 +325,8 @@ MAP
             "wms_abstract"          "uncc_20"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_20"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_25
         PROJECTION
@@ -379,7 +345,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_25.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_25.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -388,8 +354,8 @@ MAP
             "wms_abstract"          "uncc_25"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_25"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME uncc_30
         PROJECTION
@@ -408,7 +374,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/uncc_30.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/uncc_30.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/uncc_landuse.cmap"
@@ -417,8 +383,8 @@ MAP
             "wms_abstract"          "uncc_30"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "uncc_30"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME hous_den_00
         PROJECTION
@@ -437,7 +403,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/hous_den_00.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/hous_den_00.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/hous_den.cmap"
@@ -446,8 +412,8 @@ MAP
             "wms_abstract"          "hous_den_00"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "hous_den_00"
-        END  # end METADATA
-    END # end LAYER	
+        END
+    END
     LAYER
         NAME hous_den_30
         PROJECTION
@@ -466,7 +432,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/hous_den_30.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/hous_den_30.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/hous_den.cmap"
@@ -475,8 +441,8 @@ MAP
             "wms_abstract"          "hous_den_30"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "hous_den_30"
-        END  # end METADATA
-    END # end LAYER		
+        END
+    END
     LAYER
         NAME sfsuit
         PROJECTION
@@ -495,7 +461,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/sfsuit.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/sfsuit.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/sfsuit.cmap"
@@ -504,8 +470,8 @@ MAP
             "wms_abstract"          "sfsuit"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "sfsuit"
-        END  # end METADATA
-    END # end LAYER		
+        END
+    END
     LAYER
         NAME mfsuit
         PROJECTION
@@ -524,7 +490,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/mfsuit.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/mfsuit.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/mfsuit.cmap"
@@ -533,8 +499,8 @@ MAP
             "wms_abstract"          "mfsuit"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "mfsuit"
-        END  # end METADATA
-    END # end LAYER			
+        END
+    END
     LAYER
         NAME indsuit
         PROJECTION
@@ -553,7 +519,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/indsuit.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/indsuit.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/indsuit.cmap"
@@ -562,8 +528,8 @@ MAP
             "wms_abstract"          "indsuit"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "indsuit"
-        END  # end METADATA
-    END # end LAYER			
+        END
+    END
     LAYER
         NAME comsuit
         PROJECTION
@@ -582,7 +548,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/comsuit.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/comsuit.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/comsuit.cmap"
@@ -591,8 +557,8 @@ MAP
             "wms_abstract"          "comsuit"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "comsuit"
-        END  # end METADATA
-    END # end LAYER				
+        END
+    END
     LAYER
         NAME dem
         PROJECTION
@@ -611,7 +577,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/dem.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/dem.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/dem.cmap"
@@ -620,8 +586,8 @@ MAP
             "wms_abstract"          "dem"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "dem"
-        END  # end METADATA
-    END # end LAYER				
+        END
+    END
     LAYER
         NAME hillshade
         PROJECTION
@@ -640,7 +606,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/hillshade.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/hillshade.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/hillshade.cmap"
@@ -649,8 +615,8 @@ MAP
             "wms_abstract"          "hillshade"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "hillshade"
-        END  # end METADATA
-    END # end LAYER				
+        END
+    END
     LAYER
         NAME slope_20
         PROJECTION
@@ -669,7 +635,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/slope_20.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/slope_20.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/slope_20.cmap"
@@ -678,8 +644,8 @@ MAP
             "wms_abstract"          "slope_20"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "slope_20"
-        END  # end METADATA
-    END # end LAYER					
+        END
+    END
     LAYER
         NAME p_ann_81_10
         PROJECTION
@@ -691,7 +657,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/p_ann_81_10.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/p_ann_81_10.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/p_ann_81_10.cmap"
@@ -700,8 +666,8 @@ MAP
             "wms_abstract"          "p_ann_81_10"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "p_ann_81_10"
-        END  # end METADATA
-    END # end LAYER					
+        END
+    END
     LAYER
         NAME ppt_dry_81_10
         PROJECTION
@@ -713,7 +679,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/ppt_dry_81_10.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/ppt_dry_81_10.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/ppt_dry_81_10.cmap"
@@ -722,8 +688,8 @@ MAP
             "wms_abstract"          "ppt_dry_81_10"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "ppt_dry_81_10"
-        END  # end METADATA
-    END # end LAYER					
+        END
+    END
     LAYER
         NAME ppt_wet_81_10
         PROJECTION
@@ -735,7 +701,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/ppt_wet_81_10.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/ppt_wet_81_10.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/ppt_wet_81_10.cmap"
@@ -744,8 +710,8 @@ MAP
             "wms_abstract"          "ppt_wet_81_10"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "ppt_wet_81_10"
-        END  # end METADATA
-    END # end LAYER					
+        END
+    END
     LAYER
         NAME tmax_an_81_10
         PROJECTION
@@ -757,7 +723,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/tmax_an_81_10.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/tmax_an_81_10.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/tmax_an_81_10.cmap"
@@ -766,8 +732,8 @@ MAP
             "wms_abstract"          "tmax_an_81_10"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "tmax_an_81_10"
-        END  # end METADATA
-    END # end LAYER					
+        END
+    END
     LAYER
         NAME tmin_an_81_10
         PROJECTION
@@ -779,7 +745,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/tmin_an_81_10.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/tmin_an_81_10.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/tmin_an_81_10.cmap"
@@ -788,8 +754,8 @@ MAP
             "wms_abstract"          "tmin_an_81_10"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "tmin_an_81_10"
-        END  # end METADATA
-    END # end LAYER						
+        END
+    END
     LAYER
         NAME bauempby15
         PROJECTION
@@ -808,7 +774,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/bauempby15_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/bauempby15_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/bauempby15_2000.cmap"
@@ -817,8 +783,8 @@ MAP
             "wms_abstract"          "bauempby15"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "bauempby15"
-        END  # end METADATA
-    END # end LAYER							
+        END
+    END
     LAYER
         NAME bauduby5
         PROJECTION
@@ -837,7 +803,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/bauduby5_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/bauduby5_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/bauduby5_2000.cmap"
@@ -846,8 +812,8 @@ MAP
             "wms_abstract"          "bauduby5"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "bauduby5"
-        END  # end METADATA
-    END # end LAYER								
+        END
+    END
     LAYER
         NAME egempby15
         PROJECTION
@@ -866,7 +832,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/egempby15_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/egempby15_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/egempby15_2000.cmap"
@@ -875,8 +841,8 @@ MAP
             "wms_abstract"          "egempby15"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "egempby15"
-        END  # end METADATA
-    END # end LAYER								
+        END
+    END
     LAYER
         NAME egduby5
         PROJECTION
@@ -895,7 +861,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/egduby5_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/egduby5_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/egduby5_2000.cmap"
@@ -904,8 +870,8 @@ MAP
             "wms_abstract"          "egduby5"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "egduby5"
-        END  # end METADATA
-    END # end LAYER									
+        END
+    END
     LAYER
         NAME psempby15
         PROJECTION
@@ -924,7 +890,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/psempby15_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/psempby15_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/psempby15_2000.cmap"
@@ -933,8 +899,8 @@ MAP
             "wms_abstract"          "psempby15"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "psempby15"
-        END  # end METADATA
-    END # end LAYER								
+        END
+    END
     LAYER
         NAME psduby5
         PROJECTION
@@ -953,7 +919,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/psduby5_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/psduby5_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/psduby5_2000.cmap"
@@ -962,8 +928,8 @@ MAP
             "wms_abstract"          "psduby5"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "psduby5"
-        END  # end METADATA
-    END # end LAYER										
+        END
+    END
     LAYER
         NAME rcempby15
         PROJECTION
@@ -982,7 +948,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/rcempby15_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/rcempby15_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/rcempby15_2000.cmap"
@@ -991,8 +957,8 @@ MAP
             "wms_abstract"          "rcempby15"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "rcempby15"
-        END  # end METADATA
-    END # end LAYER										
+        END
+    END
     LAYER
         NAME rcduby5
         PROJECTION
@@ -1011,7 +977,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/rcduby5_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/rcduby5_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/rcduby5_2000.cmap"
@@ -1020,8 +986,8 @@ MAP
             "wms_abstract"          "rcduby5"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "rcduby5"
-        END  # end METADATA
-    END # end LAYER											
+        END
+    END
     LAYER
         NAME epempby15
         PROJECTION
@@ -1040,7 +1006,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/epempby15_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/epempby15_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/epempby15.html
 		INCLUDE "cmaps/epempby15_2000.cmap"
@@ -1049,8 +1015,8 @@ MAP
             "wms_abstract"          "epempby15"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "epempby15"
-        END  # end METADATA
-    END # end LAYER											
+        END
+    END
     LAYER
         NAME epduby5
         PROJECTION
@@ -1069,7 +1035,7 @@ MAP
         TYPE     RASTER
         DUMP     TRUE
         STATUS   OFF
-        DATA     %(RASTER_DATA_DIR)s/epduby5_2000.img
+        DATA     /mnt/efs/efetac/fsdata1/grownc/epduby5_2000.img
         HEADER   ./templates/layer_query_header.html
         TEMPLATE ./templates/layer_query_body.html
 		INCLUDE "cmaps/epduby5_2000.cmap"
@@ -1078,7 +1044,7 @@ MAP
             "wms_abstract"          "epduby5"
             "gml_include_items"     "value_list"
 			"gml_value_0_alias"     "epduby5"
-        END  # end METADATA
-    END # end LAYER												
+        END
+    END
 	
-END # end MAP
+END

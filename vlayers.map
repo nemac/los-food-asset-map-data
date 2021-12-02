@@ -1,32 +1,12 @@
 MAP
-    # the following two lines tell MapServer to write debugging output to a log file.  Remove the '#' from the beginning
-    # of the two lines below to enable this logging:
-    #CONFIG "MS_ERRORFILE" "../var/log/vlayers.log"
-    #DEBUG 5
-
-    # all temp files get prefixed with this string
     NAME ms_vlayers
-
-    #jdm:added to accomodate map layers
-    #see http://trac.osgeo.org/mapserver/ticket/3055
     MAXSIZE 3072 
-    
-    # background color of image if transparency
-    # is not requested
     IMAGECOLOR 255 255 255
-
-    # default output image dimensions
     SIZE 600 400
-
-    # always returns a map
     STATUS ON
-
-    # set top level projection
     PROJECTION
-        "init=epsg:3785"
+        "init=epsg:3857"
     END
-
-    # image format options
     OUTPUTFORMAT
         NAME "PNG"
         DRIVER "GDAL/PNG"
@@ -34,54 +14,38 @@ MAP
         IMAGEMODE "RGB"
         EXTENSION "png"
     END
-
-    # minx miny maxx maxy
-    EXTENT    -124.733174 24.543940 -66.950005 49.384359 # US
-
-    # add def pointers for symbols
     SYMBOLSET "./symbols/symbols35.sym"
     FONTSET   "./fonts/fonts.list"
-
-    # Start of web interface definition
     WEB
-
-        # this is the real filepath to the temp dir for intermediate file creation
         IMAGEPATH "./tmp"
-
-        # this is the web-accessible path to IMAGEPATH
         IMAGEURL "/tmp/"
-
         HEADER "./templates/query_header.html"
         FOOTER "./templates/query_footer.html"
-
         METADATA
             "ows_enable_request"     "*"
             "wms_title"              "NEMAC vlayers WMS"
             "wms_abstract"           "NEMAC vlayers WMS"
-            "wms_onlineresource"     "%(SERVICE_URL)s"
-            "wms_srs"                "EPSG:3785 EPSG:4326 EPSG:900913"
+            "wms_onlineresource"     "http://los-food-asset-map-data.nemac.org"
+            "wms_srs"                "EPSG:3857 EPSG:3785 EPSG:4326 EPSG:900913"
         END
     END
-
     QUERYMAP
         STATUS OFF
     END
-
-    # set defaults for GetLegendGraphic requests 
     LEGEND
         KEYSIZE 30 20
     END
 
 	#Built Section------------------------------------------------------------
-    LAYER # 
+    LAYER
         NAME abandoned_railroads
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from abandoned_railroads"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -90,8 +54,6 @@ MAP
         CLASS
             NAME "abandoned_railroads"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0 
             END
         END		
@@ -99,17 +61,17 @@ MAP
             "wms_title"          "abandoned_railroads"
             "wms_abstract"       "abandoned_railroads"
             "gml_include_items"  "gid"
-        END  # end METADATA
-    END # 
-	LAYER # 
+        END
+    END
+	LAYER
         NAME railroads
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from railroads"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -118,8 +80,6 @@ MAP
         CLASS
             NAME "railroads"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0 
             END
         END		
@@ -127,17 +87,17 @@ MAP
             "wms_title"          "railroads"
             "wms_abstract"       "railroads"
             "gml_include_items"  "all"
-        END  # end METADATA
-    END # 
-    LAYER # 
+        END
+    END
+    LAYER
         NAME airports
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from airports"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -146,8 +106,6 @@ MAP
         CLASS
             NAME "airports"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 102 
             END
         END		
@@ -155,17 +113,17 @@ MAP
             "wms_title"          "airports"
             "wms_abstract"       "airports"
             "gml_include_items"  "arpt_id"
-        END  # end METADATA
-    END # 	
-    LAYER # 
+        END
+    END
+    LAYER
         NAME appalachian_trail
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from appalachian_trail"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -174,8 +132,6 @@ MAP
         CLASS
             NAME "appalachian_trail"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 102 
             END
         END		
@@ -183,17 +139,17 @@ MAP
             "wms_title"          "appalachian_trail"
             "wms_abstract"       "appalachian_trail"
             "gml_include_items"  "status,surface,shared_use"
-        END  # end METADATA
-    END #	
-    LAYER # 
+        END
+    END
+    LAYER
         NAME appalachian_trail_parking
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from appalachian_trail_parking"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -202,8 +158,6 @@ MAP
         CLASS
             NAME "appalachian_trail_parking"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 102 
             END
         END		
@@ -211,17 +165,17 @@ MAP
             "wms_title"          "appalachian_trail_parking"
             "wms_abstract"       "appalachian_trail_parking"
             "gml_include_items"  "name,surface,type"
-        END  # end METADATA
-    END #	
-	LAYER # 
+        END
+    END
+	LAYER
         NAME interstates
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from interstates"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -230,8 +184,6 @@ MAP
         CLASS
             NAME "interstates"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 102 
             END
         END		
@@ -239,17 +191,17 @@ MAP
             "wms_title"          "interstates"
             "wms_abstract"       "interstates"
             "gml_include_items"  "all"
-        END  # end METADATA
+        END
     END #
-	LAYER # 
+	LAYER
         NAME Major_Roads
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from major_roads"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -258,8 +210,6 @@ MAP
         CLASS
             NAME "Major_Roads"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 102 
             END
         END		
@@ -267,17 +217,17 @@ MAP
             "wms_title"          "Major_Roads"
             "wms_abstract"       "Major_Roads"
             "gml_include_items"  "type,LABEL,gid"
-        END  # end METADATA
+        END
     END #
-    LAYER # 
+    LAYER
         NAME appalachian_trail_shelters
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from appalachian_trail_shelters"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -286,8 +236,6 @@ MAP
         CLASS
             NAME "appalachian_trail_shelters"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 102 
             END
         END		
@@ -295,17 +243,17 @@ MAP
             "wms_title"          "appalachian_trail_shelters"
             "wms_abstract"       "appalachian_trail_shelters"
             "gml_include_items"  "name,type,ownership"
-        END  # end METADATA
-    END #	
-    LAYER # 
+        END
+    END
+    LAYER
         NAME blue_ridge_parkway
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from blue_ridge_parkway"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -314,8 +262,6 @@ MAP
         CLASS
             NAME "blue_ridge_parkway"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -323,17 +269,17 @@ MAP
             "wms_title"          "blue_ridge_parkway"
             "wms_abstract"       "blue_ridge_parkway"
             "gml_include_items"  "gid,overlook"
-        END  # end METADATA
-    END #		
-    LAYER # 
+        END
+    END
+    LAYER
         NAME dams_all
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from dams_all"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -342,8 +288,6 @@ MAP
         CLASS
             NAME "dams_all"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -351,18 +295,17 @@ MAP
             "wms_title"          "dams_all"
             "wms_abstract"       "dams_all"
             "gml_include_items"  "dam_name,own_name,river"
-        END  # end METADATA
+        END
     END #
-
-	LAYER # 
+	LAYER
         NAME hydro_dams
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from hydro_dams"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -371,8 +314,6 @@ MAP
         CLASS
             NAME "hydro_dams"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -380,18 +321,17 @@ MAP
             "wms_title"          "hydro_dams"
             "wms_abstract"       "hydro_dams"
             "gml_include_items"  "all"
-        END  # end METADATA
+        END
     END #
-
-	LAYER # 
+	LAYER
         NAME WindPower_Potential_Fair_or_Better
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from windpower_potential_fair_or_better"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -400,8 +340,6 @@ MAP
         CLASS
             NAME "WindPower_Potential_Fair_or_Better"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -409,18 +347,18 @@ MAP
             "wms_title"          "WindPower_Potential_Fair_or_Better"
             "wms_abstract"       "WindPower_Potential_Fair_or_Better"
             "gml_include_items"  "gid"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Consensus_Growth_Areas
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from consensus_growth_areas"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -429,8 +367,6 @@ MAP
         CLASS
             NAME "Consensus Growth Areas"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 255 115 
             END
         END		
@@ -438,18 +374,18 @@ MAP
             "wms_title"          "Consensus_Growth_Areas"
             "wms_abstract"       "Consensus_Growth_Areas"
             "gml_include_items"  "name,gid"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Existing_Land_Use
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from existing_land_use"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -458,8 +394,6 @@ MAP
         CLASS
             NAME "Existing_Land_Use"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -467,18 +401,18 @@ MAP
             "wms_title"          "Existing_Land_Use"
             "wms_abstract"       "Existing_Land_Use"
             "gml_include_items"  "LU,OWNER,PIN"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Land_Supply
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from land_supply"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -487,8 +421,6 @@ MAP
         CLASS
             NAME "Land_Supply"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -496,18 +428,18 @@ MAP
             "wms_title"          "Land_Supply"
             "wms_abstract"       "Land_Supply"
             "gml_include_items"  "LU,OWNER,landsupply,PIN"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Protected_Lands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from protected_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -516,8 +448,6 @@ MAP
         CLASS
             NAME "Protected_Lands"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -525,18 +455,18 @@ MAP
             "wms_title"          "Protected_Lands"
             "wms_abstract"       "Protected_Lands"
             "gml_include_items"  "LMA_SITE,AGENCY"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Brownfield_Sites
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from brownfield_sites"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -545,8 +475,6 @@ MAP
         CLASS
             NAME "Brownfield_Sites"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -554,18 +482,18 @@ MAP
             "wms_title"          "Brownfield_Sites"
             "wms_abstract"       "Brownfield_Sites"
             "gml_include_items"  "Project_No,Name"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Hazardous_Waste_Sites
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from hazardous_waste_sites"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -574,8 +502,6 @@ MAP
         CLASS
             NAME "Hazardous_Waste_Sites"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -583,18 +509,18 @@ MAP
             "wms_title"          "Hazardous_Waste_Sites"
             "wms_abstract"       "Hazardous_Waste_Sites"
             "gml_include_items"  "site_name,gid"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Public_Landfills
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from public_landfills"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -603,8 +529,6 @@ MAP
         CLASS
             NAME "Public_Landfills"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -612,18 +536,18 @@ MAP
             "wms_title"          "Public_Landfills"
             "wms_abstract"       "Public_Landfills"
             "gml_include_items"  "permit_nam,permitstat,primarywas"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Rural_Centers
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from rural_centers"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -632,8 +556,6 @@ MAP
         CLASS
             NAME "Rural_Centers"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -641,18 +563,18 @@ MAP
             "wms_title"          "Rural_Centers"
             "wms_abstract"       "Rural_Centers"
             "gml_include_items"  "gid,Name"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Urban_Service_Areas
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from urban_service_areas"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -661,8 +583,6 @@ MAP
         CLASS
             NAME "Urban_Service_Areas"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -670,18 +590,18 @@ MAP
             "wms_title"          "Urban_Service_Areas"
             "wms_abstract"       "Urban_Service_Areas"
             "gml_include_items"  "gid,SSSYNAME"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME Water_Tanks
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from water_tanks"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -690,8 +610,6 @@ MAP
         CLASS
             NAME "Water_Tanks"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -699,18 +617,18 @@ MAP
             "wms_title"          "Water_Tanks"
             "wms_abstract"       "Water_Tanks"
             "gml_include_items"  "all"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME EMS_Locations
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from ems_locations"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -719,8 +637,6 @@ MAP
         CLASS
             NAME "EMS_Locations"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -728,18 +644,18 @@ MAP
             "wms_title"          "EMS_Locations"
             "wms_abstract"       "EMS_Locations"
             "gml_include_items"  "name,telephone,address,city,state,zip"
-        END  # end METADATA
+        END
     END #
 	
-	LAYER # 
+	LAYER
         NAME DriveTime_5min_Fire_EMS
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from drivetime_5min_fire_ems"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -748,8 +664,6 @@ MAP
         CLASS
             NAME "DriveTime_5min_Fire_EMS"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0  
             END
         END		
@@ -757,19 +671,17 @@ MAP
             "wms_title"          "DriveTime_5min_Fire_EMS"
             "wms_abstract"       "DriveTime_5min_Fire_EMS"
             "gml_include_items"  "gid,Name"
-        END  # end METADATA
+        END
     END #
-
-    #Natural Section------------------------------------------------------------
-    LAYER # 
+    LAYER
         NAME eastern_continental_divide
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from eastern_continental_divide"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -778,7 +690,6 @@ MAP
         CLASS
             NAME "eastern_continental_divide"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -786,18 +697,17 @@ MAP
             "wms_title"            "eastern_continental_divide"
             "wms_abstract"         "eastern_continental_divide"
             "gml_include_items"    "region,subregion,basin,subbasin"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME floodplains_500yr
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from floodplains_500yr"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -806,7 +716,6 @@ MAP
         CLASS
             NAME "floodplains_500yr"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -814,18 +723,17 @@ MAP
             "wms_title"            "floodplains_500yr"
             "wms_abstract"         "floodplains_500yr"
             "gml_include_items"    "gid"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME geologic_faults
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from geologic_faults"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -834,7 +742,6 @@ MAP
         CLASS
             NAME "geologic_faults"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -842,18 +749,17 @@ MAP
             "wms_title"            "geologic_faults"
             "wms_abstract"         "geologic_faults"
             "gml_include_items"    "gid"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME geology
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from geology"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -862,7 +768,6 @@ MAP
         CLASS
             NAME "geology"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -870,18 +775,17 @@ MAP
             "wms_title"            "geology"
             "wms_abstract"         "geology"
             "gml_include_items"    "gid"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME hqw_orw
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from hqw_orw"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -890,7 +794,6 @@ MAP
         CLASS
             NAME "hqw_orw"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -898,18 +801,17 @@ MAP
             "wms_title"            "hqw_orw"
             "wms_abstract"         "hqw_orw"
             "gml_include_items"    "riv_basin,name,class"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME landslide_locations
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from landslide_locations"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -918,7 +820,6 @@ MAP
         CLASS
             NAME "landslide_locations"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -926,18 +827,17 @@ MAP
             "wms_title"            "landslide_locations"
             "wms_abstract"         "landslide_locations"
             "gml_include_items"    "col_date,type,project,quad_24k"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME major_lakes
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from major_lakes"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -946,7 +846,6 @@ MAP
         CLASS
             NAME "major_lakes"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -954,18 +853,17 @@ MAP
             "wms_title"            "major_lakes"
             "wms_abstract"         "major_lakes"
             "gml_include_items"    "gid,name"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME major_rivers
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from major_rivers"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -974,7 +872,6 @@ MAP
         CLASS
             NAME "major_rivers"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -982,18 +879,17 @@ MAP
             "wms_title"            "major_rivers"
             "wms_abstract"         "major_rivers"
             "gml_include_items"    "stream_nam,riv_basin,descrip_cl"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME managed_areas
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from managed_areas"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1002,7 +898,6 @@ MAP
         CLASS
             NAME "managed_areas"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1010,18 +905,17 @@ MAP
             "wms_title"            "managed_areas"
             "wms_abstract"         "managed_areas"
             "gml_include_items"    "ma_name,owner,gap_status"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME significant_natural_heritage_areas
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from significant_natural_heritage_areas"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1030,7 +924,6 @@ MAP
         CLASS
             NAME "significant_natural_heritage_areas"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1038,18 +931,17 @@ MAP
             "wms_title"            "significant_natural_heritage_areas"
             "wms_abstract"         "significant_natural_heritage_areas"
             "gml_include_items"    "site_name,owner"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME streams
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from streams_24k"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -1058,7 +950,6 @@ MAP
         CLASS
             NAME "streams"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1066,18 +957,17 @@ MAP
             "wms_title"            "streams_24k"
             "wms_abstract"         "streams_24k"
             "gml_include_items"    "dwqname,dwqdescr,dwqclass"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME waterbodies
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from waterbodies"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1086,7 +976,6 @@ MAP
         CLASS
             NAME "waterbodies"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1094,18 +983,17 @@ MAP
             "wms_title"            "waterbodies"
             "wms_abstract"         "waterbodies"
             "gml_include_items"    "name,fcode_desc"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME watersheds_12digit
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from watersheds_12digit"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1114,7 +1002,6 @@ MAP
         CLASS
             NAME "watersheds_12digit"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1122,18 +1009,17 @@ MAP
             "wms_title"            "watersheds_12digit"
             "wms_abstract"         "watersheds_12digit"
             "gml_include_items"    "hu_10_name,hu_12_name,basin,subbasin"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME watersheds_8digit
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from watersheds_8digit"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1142,7 +1028,6 @@ MAP
         CLASS
             NAME "watersheds_8digit"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1150,18 +1035,17 @@ MAP
             "wms_title"            "watersheds_8digit"
             "wms_abstract"         "watersheds_8digit"
             "gml_include_items"    "gid,globalid"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME watersheds_ws
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from watersheds_ws"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1170,7 +1054,6 @@ MAP
         CLASS
             NAME "Water Supply Watersheds"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1178,18 +1061,17 @@ MAP
             "wms_title"            "watersheds_ws"
             "wms_abstract"         "watersheds_ws"
             "gml_include_items"    "stream_nam,river_basi"
-        END  # end METADATA
-    END # end Layer
-    
-    LAYER # 
+        END
+    END
+    LAYER
         NAME wetlands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from wetlands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1198,7 +1080,6 @@ MAP
         CLASS
             NAME "wetlands"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1206,18 +1087,18 @@ MAP
             "wms_title"            "wetlands"
             "wms_abstract"         "wetlands"
             "gml_include_items"    "gid,wetland_ty"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Critical_Ecological_Corridors
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from critical_ecological_corridors"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1226,7 +1107,6 @@ MAP
         CLASS
             NAME "Critical_Ecological_Corridors"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1234,18 +1114,18 @@ MAP
             "wms_title"            "Critical_Ecological_Corridors"
             "wms_abstract"         "Critical_Ecological_Corridors"
             "gml_include_items"    "gid"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Impaired_303D_Streams
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from impaired_303d_streams"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -1254,7 +1134,6 @@ MAP
         CLASS
             NAME "Impaired_303D_Streams"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1262,18 +1141,18 @@ MAP
             "wms_title"            "Impaired_303D_Streams"
             "wms_abstract"         "Impaired_303D_Streams"
             "gml_include_items"    "EVENTDATE,gid"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Viewsheds_AT_BRP
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from viewsheds_at_brp"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1282,7 +1161,6 @@ MAP
         CLASS
             NAME "Viewsheds_AT_BRP"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
         END
@@ -1290,20 +1168,19 @@ MAP
             "wms_title"            "Viewsheds_AT_BRP"
             "wms_abstract"         "Viewsheds_AT_BRP"
             "gml_include_items"    "gid,FID_AT_Vie"
-        END  # end METADATA
-    END # end Layer	
-
+        END
+    END
 	#Economic Section------------------------------------------------------------
 	
-	LAYER # 
+	LAYER
         NAME gas_stations
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from gas_stations"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1320,18 +1197,18 @@ MAP
             "wms_title"            "gas_stations"
             "wms_abstract"         "gas_stations"
             "gml_include_items"    "name,title,parent_com"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME fire_stations
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from fire_stations"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1348,18 +1225,18 @@ MAP
             "wms_title"            "fire_stations"
             "wms_abstract"         "fire_stations"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME USDA_Food_Stamp_Businesses
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from usda_food_stamp_businesses"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1376,18 +1253,18 @@ MAP
             "wms_title"            "USDA_Food_Stamp_Businesses"
             "wms_abstract"         "USDA_Food_Stamp_Businesses"
             "gml_include_items"    "STORE_NAME,gid"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Agriculture_Supportive_Lands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from agriculture_supportive_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1404,18 +1281,18 @@ MAP
             "wms_title"            "Agriculture_Supportive_Lands"
             "wms_abstract"         "Agriculture_Supportive_Lands"
             "gml_include_items"    "SHAPE_Area,gid"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Prime_Industrial_Land
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from prime_industrial_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1432,18 +1309,18 @@ MAP
             "wms_title"            "Prime_Industrial_Land"
             "wms_abstract"         "Prime_Industrial_Land"
             "gml_include_items"    "LU,OWNER,LandSupply"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME HighDensity_Street_Areas
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from highdensity_street_areas"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1460,20 +1337,19 @@ MAP
             "wms_title"            "HighDensity_Street_Areas"
             "wms_abstract"         "HighDensity_Street_Areas"
             "gml_include_items"    "gid,ID"
-        END  # end METADATA
-    END # end Layer
-
+        END
+    END
 	#Human Section------------------------------------------------------------
 	
-	LAYER # 
+	LAYER
         NAME game_lands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from game_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1490,18 +1366,18 @@ MAP
             "wms_title"            "game_lands"
             "wms_abstract"         "game_lands"
             "gml_include_items"    "gml_hab,gml_own,region"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME public_trout_rivers
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from public_trout_rivers"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             LINE
         DUMP             TRUE
@@ -1518,18 +1394,18 @@ MAP
             "wms_title"            "public_trout_rivers"
             "wms_abstract"         "public_trout_rivers"
             "gml_include_items"    "stream_nam,wrc_class"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME colleges_universities
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from colleges_universities"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1546,18 +1422,18 @@ MAP
             "wms_title"            "colleges_universities"
             "wms_abstract"         "colleges_universities"
             "gml_include_items"    "NAME,NAICSDESCR,DEGREE"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME private_schools
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from private_schools"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1574,18 +1450,18 @@ MAP
             "wms_title"            "private_schools"
             "wms_abstract"         "private_schools"
             "gml_include_items"    "schl_name,grades"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME public_schools
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from public_schools"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1602,18 +1478,18 @@ MAP
             "wms_title"            "public_schools"
             "wms_abstract"         "public_schools"
             "gml_include_items"    "school_nam,gid"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME hospitals
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from hospitals"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1630,18 +1506,18 @@ MAP
             "wms_title"            "hospitals"
             "wms_abstract"         "hospitals"
             "gml_include_items"    "name,naicsdescr"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME medical_facilities
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from medical_facilities"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1658,18 +1534,18 @@ MAP
             "wms_title"            "medical_facilities"
             "wms_abstract"         "medical_facilities"
             "gml_include_items"    "STYPE,FACILITY"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME public_health_centers
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from public_health_centers"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1686,18 +1562,18 @@ MAP
             "wms_title"            "public_health_centers"
             "wms_abstract"         "public_health_centers"
             "gml_include_items"    "name,naicsdescr"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Camps_Cultural_Features
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from camps_cultural_features"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1714,18 +1590,18 @@ MAP
             "wms_title"            "Camps_Cultural_Features"
             "wms_abstract"         "Camps_Cultural_Features"
             "gml_include_items"    "gid,LABEL,NAME"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Key_Locations_and_Parks
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from key_locations_and_parks_esri"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1742,18 +1618,18 @@ MAP
             "wms_title"            "Key_Locations_and_Parks"
             "wms_abstract"         "Key_Locations_and_Parks"
             "gml_include_items"    "name,gid"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Mountain_Peaks
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from mountain_peaks"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1770,18 +1646,18 @@ MAP
             "wms_title"            "Mountain_Peaks"
             "wms_abstract"         "Mountain_Peaks"
             "gml_include_items"    "NAME,ELEV_FEET"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Mountain_Peaks_3000ft
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from mountain_peaks_3000ft"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -1798,18 +1674,18 @@ MAP
             "wms_title"            "Mountain_Peaks_3000ft"
             "wms_abstract"         "Mountain_Peaks_3000ft"
             "gml_include_items"    "NAME,ELEV_FEET"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME Schools_All_HalfMile_Buffer
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from schools_all_halfmile_buffer"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1826,18 +1702,18 @@ MAP
             "wms_title"            "Schools_All_HalfMile_Buffer"
             "wms_abstract"         "Schools_All_HalfMile_Buffer"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME DriveTime_5min_HealthCare_Facilities
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from drivetime_5min_healthcare_facilities"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1854,18 +1730,18 @@ MAP
             "wms_title"            "DriveTime_5min_HealthCare_Facilities"
             "wms_abstract"         "DriveTime_5min_HealthCare_Facilities"
             "gml_include_items"    "Name,gid"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME DriveTime_10min_Hospitals
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from drivetime_10min_hospitals"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1882,20 +1758,20 @@ MAP
             "wms_title"            "DriveTime_10min_Hospitals"
             "wms_abstract"         "DriveTime_10min_Hospitals"
             "gml_include_items"    "Name,gid"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
 	#Political Boundaries Section------------------------------------------------------------
 	
-	LAYER # 
+	LAYER
         NAME urban_areas
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from urban_areas"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1912,18 +1788,18 @@ MAP
             "wms_title"            "urban_areas"
             "wms_abstract"         "urban_areas"
             "gml_include_items"    "name,pop2000"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME census_blocks_2010
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from census_blocks_2010"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1940,18 +1816,18 @@ MAP
             "wms_title"            "census_blocks_2010"
             "wms_abstract"         "census_blocks_2010"
             "gml_include_items"    "name10,gid,geoid10"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME census_block_groups_2010
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from census_block_groups_2010"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1968,18 +1844,18 @@ MAP
             "wms_title"            "census_block_groups_2010"
             "wms_abstract"         "census_block_groups_2010"
             "gml_include_items"    "namelsad10,geoid10,sqmiles"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME census_tracts_2010
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from census_tracts_2010"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -1996,18 +1872,18 @@ MAP
             "wms_title"            "census_tracts_2010"
             "wms_abstract"         "census_tracts_2010"
             "gml_include_items"    "name10,gid,geoid10"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME communities_incorporated
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from communities_incorporated"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2024,18 +1900,18 @@ MAP
             "wms_title"            "communities_incorporated"
             "wms_abstract"         "communities_incorporated"
             "gml_include_items"    "name,gid,fips"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME communities_other
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from communities_other"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2052,18 +1928,18 @@ MAP
             "wms_title"            "communities_other"
             "wms_abstract"         "communities_other"
             "gml_include_items"    "name,gid,fips"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME county_boundaries
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from county_boundaries"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2073,7 +1949,6 @@ MAP
         CLASS
             NAME "County Boundaries"
             STYLE
-                #COLOR        232 232 232
                 OUTLINECOLOR 0 0 0 
             END
 		    LABEL
@@ -2085,29 +1960,29 @@ MAP
 				PARTIALS FALSE
 				MINDISTANCE 300
 				BUFFER 4
-				STYLE    # since to version 6
+				STYLE
 				  GEOMTRANSFORM 'labelpoly'
-				  #COLOR 218 218 218
+				
 				  OFFSET 2 2
-				END # STYLE
-		    END # end of label		
+				END
+		    END
         END
         METADATA
             "wms_title"            "county_boundaries"
             "wms_abstract"         "county_boundaries"
             "gml_include_items"    "co_name,acres,pop2000"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME county_seats
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from county_seats"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2124,18 +1999,18 @@ MAP
             "wms_title"            "county_seats"
             "wms_abstract"         "county_seats"
             "gml_include_items"    "name,pop2000"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME federal_lands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from federal_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2152,18 +2027,18 @@ MAP
             "wms_title"            "federal_lands"
             "wms_abstract"         "federal_lands"
             "gml_include_items"    "ma_name,owner"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME municipal_boundaries
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from municipal_boundaries"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2180,18 +2055,18 @@ MAP
             "wms_title"            "municipal_boundaries"
             "wms_abstract"         "municipal_boundaries"
             "gml_include_items"    "mb_name,pop_est,pop_est_yr"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME populated_places
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from populated_places_esri"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2208,18 +2083,18 @@ MAP
             "wms_title"            "populated_places"
             "wms_abstract"         "populated_places"
             "gml_include_items"    "name,elev_meter"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME state_owned_lands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from state_owned_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2236,18 +2111,18 @@ MAP
             "wms_title"            "state_owned_lands"
             "wms_abstract"         "state_owned_lands"
             "gml_include_items"    "complex_na,dept_name,div_name"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-	LAYER # 
+	LAYER
         NAME zip_codes
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from zip_codes"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2264,17 +2139,17 @@ MAP
             "wms_title"            "zip_codes"
             "wms_abstract"         "zip_codes"
             "gml_include_items"    "zip,po_name"
-        END  # end METADATA
-    END # end Layer
-	LAYER # 
+        END
+    END
+	LAYER
         NAME food_infrastructure
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from food_infrastructure"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2292,17 +2167,17 @@ MAP
             "wms_title"            "food_infrastructure"
             "wms_abstract"         "food_infrastructure"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer
-	LAYER # 
+        END
+    END
+	LAYER
         NAME ag_farms
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from ag_farms"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
 		
@@ -2313,8 +2188,6 @@ MAP
        CLASS
             NAME "ag_farms"
             STYLE
-                #SYMBOL 'circle'
-                #SIZE 5
                 COLOR 255 0 0
                 OUTLINECOLOR 0 0 0 
             END
@@ -2323,17 +2196,17 @@ MAP
             "wms_title"            "ag_farms"
             "wms_abstract"         "ag_farms"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
-	LAYER # 
+        END
+    END
+	LAYER
         NAME farmers_age_below_35
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from farmers_age_below_35"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2350,17 +2223,17 @@ MAP
             "wms_title"            "farmers_age_below_35"
             "wms_abstract"         "farmers_age_below_35"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
-	LAYER # 
+        END
+    END
+	LAYER
         NAME farmland_change
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from farmland_change"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2370,47 +2243,47 @@ MAP
           EXPRESSION ([perchange] < -10)
           STYLE
             COLOR 166 97 26
-          END #STYLE
-        END #end class
+          END
+        END
         CLASS
           EXPRESSION ([perchange] >= -10 AND [perchange] < -4.7)
           STYLE
             COLOR 223 194 125
-          END #STYLE
-        END #end class        
+          END
+        END
         CLASS
           EXPRESSION ([perchange] >= -4.7 AND [perchange] < 0.7)
           STYLE
             COLOR 245 245 245
-          END #STYLE
-        END #end class    
+          END
+        END
         CLASS
           EXPRESSION ([perchange] >= 0.7 AND [perchange] < 6.2)
           STYLE
             COLOR 128 205 193
-          END #STYLE
-        END #end class    
+          END
+        END
         CLASS
           EXPRESSION ([perchange] >= 6.2)
           STYLE
             COLOR 1 133 113
-          END #STYLE
-        END #end class                
+          END
+        END
         METADATA
             "wms_title"            "farmland_change"
             "wms_abstract"         "farmland_change"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
-		LAYER # 
+        END
+    END
+		LAYER
         NAME direct_sales
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from direct_sales"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2427,18 +2300,18 @@ MAP
             "wms_title"            "direct_sales"
             "wms_abstract"         "direct_sales"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-		LAYER # 
+		LAYER
         NAME diabetes_rate
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from diabetes_rate"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2455,18 +2328,18 @@ MAP
             "wms_title"            "diabetes_rate"
             "wms_abstract"         "diabetes_rate"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-		LAYER # 
+		LAYER
         NAME obesity_rate
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from obesity_rate"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2483,18 +2356,18 @@ MAP
             "wms_title"            "obesity_rate"
             "wms_abstract"         "obesity_rate"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	
-		LAYER # 
+		LAYER
         NAME snap_retail
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from snap_retail"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2512,17 +2385,17 @@ MAP
             "wms_title"            "snap_retail"
             "wms_abstract"         "snap_retail"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer
+        END
+    END
 	LAYER 
         NAME direct_markets
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from direct_markets"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2540,17 +2413,17 @@ MAP
             "wms_title"            "direct_markets"
             "wms_abstract"         "direct_markets"
             "gml_include_items"    "all"
-        END  # end METADATA
-    END # end Layer    
+        END
+    END
 	LAYER 
         NAME food_service_pop
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from food_service_pop"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2568,17 +2441,17 @@ MAP
             "wms_title"            "food_service_pop"
             "wms_abstract"         "food_service_pop"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
 	LAYER 
         NAME full_service_restaurants
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from full_service_restaurants"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2596,17 +2469,17 @@ MAP
             "wms_title"            "full_service_restaurants"
             "wms_abstract"         "full_service_restaurants"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	    
+        END
+    END
 	LAYER 
         NAME grocery_stores
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from grocery_stores"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POINT
         DUMP             TRUE
@@ -2624,17 +2497,17 @@ MAP
             "wms_title"            "grocery_stores"
             "wms_abstract"         "grocery_stores"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	        
+        END
+    END
     LAYER 
         NAME ag_supportive_lands
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from ag_supportive_lands"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2650,17 +2523,17 @@ MAP
             "wms_title"            "ag_supportive_lands"
             "wms_abstract"         "ag_supportive_lands"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	            
+        END
+    END
     LAYER 
         NAME pop_sqmi_wnc
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from pop_sqmi_wnc"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2676,17 +2549,17 @@ MAP
             "wms_title"            "pop_sqmi_wnc"
             "wms_abstract"         "pop_sqmi_wnc"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	            
+        END
+    END
     LAYER 
         NAME pop_sqmi_5cnty
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from pop_sqmi_5cnty"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2702,17 +2575,17 @@ MAP
             "wms_title"            "pop_sqmi_5cnty"
             "wms_abstract"         "pop_sqmi_5cnty"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
     LAYER 
         NAME food_deserts
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from food_deserts"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2728,17 +2601,17 @@ MAP
             "wms_title"            "food_deserts"
             "wms_abstract"         "food_deserts"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
     LAYER 
         NAME percent_below_pov
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from percent_below_pov"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2754,17 +2627,17 @@ MAP
             "wms_title"            "percent_below_pov"
             "wms_abstract"         "percent_below_pov"
             "gml_include_items"    "ALL"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
     LAYER 
         NAME store_types
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from store_types"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2780,17 +2653,17 @@ MAP
             "wms_title"            "store_types"
             "wms_abstract"         "store_types"
             "gml_include_items"    "type"
-        END  # end METADATA
-    END # end Layer	
+        END
+    END
     LAYER 
         NAME pop_in_food
         PROJECTION
             "init=epsg:4326"
         END
         CONNECTIONTYPE   postgis
-        CONNECTION       "%(POSTGIS_CONNECTION_STRING)s"
+        INCLUDE      "secret.map"
         DATA             "geom from pop_in_food"
-        EXTENT           -124.733174 24.543940 -66.950005 49.384359 # US
+        EXTENT           -124.733174 24.543940 -66.950005 49.384359
         STATUS           OFF
         TYPE             POLYGON
         DUMP             TRUE
@@ -2806,6 +2679,6 @@ MAP
             "wms_title"            "pop_in_food"
             "wms_abstract"         "pop_in_food"
             "gml_include_items"    "per_pop_fi"
-        END  # end METADATA
-    END # end Layer		
+        END
+    END
 END
